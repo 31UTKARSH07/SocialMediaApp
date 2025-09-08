@@ -1,6 +1,6 @@
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 
-export const signUp = async (req, res) => {
+ const signUp = async (req, res) => {
   const { name, email, password, username } = req.body;
   if (!name || !email || !password || !username) {
     return res.status(400).json({ message: "All fields are required" });
@@ -16,3 +16,5 @@ export const signUp = async (req, res) => {
   await User.create({ name, email, password, username });
   return res.status(201).json({ message: "User created successfully" });
 };
+
+export default signUp;

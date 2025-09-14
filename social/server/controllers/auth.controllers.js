@@ -2,7 +2,6 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../config/token.js";
 
-
 export const signUp = async (req, res) => {
   const { name, email, password, username } = req.body;
   if (!name || !email || !password || !username) {

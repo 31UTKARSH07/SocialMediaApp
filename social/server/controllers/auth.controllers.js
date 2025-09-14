@@ -1,5 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import { generateToken } from "../config/token.js";
+
 export const signUp = async (req, res) => {
   const { name, email, password, username } = req.body;
   if (!name || !email || !password || !username) {
@@ -20,6 +22,8 @@ export const signUp = async (req, res) => {
     return res.status(400).json({ message: "Username already exists" });
   }
   const newUser = await User.create({ name, email, password:hashpassword, username });
+  const token = await generateToken(newUser._id)
+  console.log(token);
   return res.status(201).json({newUser});
 };
 
@@ -36,5 +40,8 @@ export const signIn = async (req, res) => {
   if(!isPasswordCorrect){
     return res.status(400).json({ message: "Invalid password" });
   }
+  const token = await generateToken(existingUser._id)
+  console.log("token: ",token);
   return res.status(200).json({message: "Login successful",user:existingUser});
 };
+

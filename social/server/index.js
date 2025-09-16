@@ -4,12 +4,14 @@ import { connectDB } from "./config/db.js";
 import authRouter from "./routers/authRoute.js";
 import userRouter from "./routers/userRoute.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 //MIDDLEWARES
+app.use(cors({ origin: "http://localhost:5174", credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 

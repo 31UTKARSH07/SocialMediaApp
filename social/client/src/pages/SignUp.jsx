@@ -1,14 +1,28 @@
-import React, { useState } from 'react'; // Import useState
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
-import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
-import logo1 from '../assets/socialLogo.png';
-import PikachuEyes from '../components/PikachuEyes'; // Import the new PikachuEyes component
+import { motion } from "framer-motion";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import logo1 from "../assets/socialLogo.png";
+import PikachuEyes from "../components/PikachuEyes";
+import { signUpUser } from "../apiCalls/authCalls";
 
 function SignUp() {
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false); // State for password focus
+  const [name, setName] = useState("");
+  const [username, setuserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
+  const  handleSignUp = async(e)=> {
+    e.preventDefault()
+    try {
+      const data = await signUpUser({name,username,password,email})
+      console.log("Signup Success:",data);
+    } catch (error) {
+      console.log("SignUp Error:",error);
+    }
+  }
   const formVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.9 },
     visible: {
@@ -16,7 +30,7 @@ function SignUp() {
       y: 0,
       scale: 1,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 70,
         damping: 15,
         delay: 0.2,
@@ -24,7 +38,6 @@ function SignUp() {
       },
     },
   };
-
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-[#120527] text-white font-sans flex justify-center items-center p-4">
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(100%_100%_at_50%_0%,rgba(81,91,212,0.3)_0%,rgba(129,52,175,0)_50%,rgba(129,52,175,0)_100%)]"></div>
@@ -38,12 +51,15 @@ function SignUp() {
       >
         <div className="w-full lg:w-[55%] p-8 md:p-12 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
-            <PikachuEyes isPasswordFocused={isPasswordFocused} /> {/* Pass the state */}
+            <PikachuEyes isPasswordFocused={isPasswordFocused} />{" "}
+            {/* Pass the state */}
             <div className="flex gap-2 items-center text-3xl font-bold text-white mt-4">
               <span>Sign Up to</span>
               <img src={logo1} alt="Scaler Gram Logo" className="w-[80px]" />
             </div>
-            <p className="text-white/70 mt-2 text-md">Join the coolest network today!</p>
+            <p className="text-white/70 mt-2 text-md">
+              Join the coolest network today!
+            </p>
           </div>
 
           <form className="w-full max-w-sm flex flex-col gap-6">
@@ -54,6 +70,8 @@ function SignUp() {
                 className="w-full p-3 pl-10 bg-white/10 text-white rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-white/50 transition-all duration-300"
                 placeholder="Enter Your Name"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
             </div>
@@ -65,6 +83,8 @@ function SignUp() {
                 className="w-full p-3 pl-10 bg-white/10 text-white rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-white/50 transition-all duration-300"
                 placeholder="Enter Username"
                 required
+                value={username}
+                onChange={(e) => setuserName(e.target.value)}
               />
               <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
             </div>
@@ -76,6 +96,8 @@ function SignUp() {
                 className="w-full p-3 pl-10 bg-white/10 text-white rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-white/50 transition-all duration-300"
                 placeholder="Enter Email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
             </div>
@@ -87,15 +109,19 @@ function SignUp() {
                 className="w-full p-3 pl-10 bg-white/10 text-white rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-white/50 transition-all duration-300"
                 placeholder="Enter password"
                 required
-                onFocus={() => setIsPasswordFocused(true)}  // Set focus state
-                onBlur={() => setIsPasswordFocused(false)}    // Clear focus state
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setIsPasswordFocused(true)} // Set focus state
+                onBlur={() => setIsPasswordFocused(false)} // Clear focus state
               />
               <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" />
             </div>
 
             <button
+
               type="submit"
               className="w-full p-3 mt-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg font-semibold rounded-lg shadow-lg shadow-purple-500/20 hover:from-blue-600 hover:to-purple-700 active:scale-[0.98] transition-all duration-300"
+              onClick={handleSignUp}
             >
               Sign Up
             </button>
@@ -112,15 +138,19 @@ function SignUp() {
           </p>
         </div>
 
-        {/* Right Side: Branding with Gradient */}
         <div className="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex-col gap-4 items-center justify-center p-8 rounded-r-3xl text-white text-center">
-          <img src={logo1} alt="Scaler Gram Icon" className="w-[150px] drop-shadow-lg" />
+          <img
+            src={logo1}
+            alt="Scaler Gram Icon"
+            className="w-[150px] drop-shadow-lg"
+          />
           <h2 className="text-4xl font-extrabold tracking-wide">Scaler Gram</h2>
-          <p className="opacity-90 text-lg">Scaling Connections to the Next Level</p>
+          <p className="opacity-90 text-lg">
+            Scaling Connections to the Next Level
+          </p>
         </div>
       </motion.div>
     </div>
   );
 }
-
 export default SignUp;

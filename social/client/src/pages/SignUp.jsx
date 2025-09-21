@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
@@ -13,12 +13,14 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const navigate = useNavigate();
 
   const  handleSignUp = async(e)=> {
     e.preventDefault()
     try {
       const data = await signUpUser({name,username,password,email})
       console.log("Signup Success:",data);
+      navigate("/signin");
     } catch (error) {
       console.log("SignUp Error:",error);
     }
@@ -42,7 +44,6 @@ function SignUp() {
     <div className="relative w-full min-h-screen overflow-hidden bg-[#120527] text-white font-sans flex justify-center items-center p-4">
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(100%_100%_at_50%_0%,rgba(81,91,212,0.3)_0%,rgba(129,52,175,0)_50%,rgba(129,52,175,0)_100%)]"></div>
       <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dfhpkqrjw/image/upload/v1726402099/grid_xotqoc.svg')] [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)]"></div>
-
       <motion.div
         variants={formVariants}
         initial="hidden"

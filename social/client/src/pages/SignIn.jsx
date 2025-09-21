@@ -1,8 +1,23 @@
 import logo from "../assets/socialLogo.png";
 import logo2 from "../assets/logo2.png";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { signInUser } from "../apiCalls/authCalls.js";
 
 function SignIn() {
+  const [username, setuserName] = useState("");
+  const [password, setuserpassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const data = await signInUser({ username, password });
+      console.log("SignIn Success:", data);
+      navigate("/home");
+    } catch (error) {
+      console.log("SignUp Error:", error);
+    }
+  };
   return (
     <div
       className="
@@ -39,6 +54,8 @@ function SignIn() {
               placeholder="Username"
               className="w-[95%] h-[44px] px-3 rounded-md border border-neutral-300 bg-neutral-50 text-neutral-900 text-sm focus:outline-none focus:border-neutral-400"
               required
+              value={username}
+              onChange={(e) => setuserName(e.target.value)}
             />
             <input
               id="password"
@@ -46,6 +63,8 @@ function SignIn() {
               className="w-[95%] h-[44px] px-3 rounded-md border border-neutral-300 bg-neutral-50 text-neutral-900 text-sm focus:outline-none focus:border-neutral-400"
               required
               type="password"
+              value={password}
+              onChange={(e) => setuserpassword(e.target.value)}
             />
           </div>
 
@@ -56,6 +75,7 @@ function SignIn() {
 
           {/* Button */}
           <button
+            onClick={handleLogin}
             className="
               w-[95%] h-[44px] mt-4 rounded-lg font-semibold 
               bg-[#0095F6] text-white 

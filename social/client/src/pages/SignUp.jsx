@@ -6,6 +6,8 @@ import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import logo1 from "../assets/socialLogo.png";
 import PikachuEyes from "../components/PikachuEyes";
 import { signUpUser } from "../apiCalls/authCalls";
+import { setUserData } from "../redux/userSclice";
+import { useDispatch } from "react-redux";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -14,12 +16,14 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const  handleSignUp = async(e)=> {
     e.preventDefault()
     try {
       const data = await signUpUser({name,username,password,email})
       console.log("Signup Success:",data);
+      dispatch(setUserData(data))
       navigate("/signin");
     } catch (error) {
       console.log("SignUp Error:",error);

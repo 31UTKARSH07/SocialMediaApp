@@ -3,16 +3,20 @@ import logo2 from "../assets/logo2.png";
 import { Link,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInUser } from "../apiCalls/authCalls.js";
+import { setUserData } from "../redux/userSclice.js";
+import { useDispatch } from "react-redux";
 
 function SignIn() {
   const [username, setuserName] = useState("");
   const [password, setuserpassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
       const data = await signInUser({ username, password });
       console.log("SignIn Success:", data);
+      dispatch(setUserData(data));
       navigate("/home");
     } catch (error) {
       console.log("SignUp Error:", error);

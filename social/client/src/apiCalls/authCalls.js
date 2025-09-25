@@ -24,3 +24,13 @@ export const signInUser = async ({ username, password }) => {
     console.error("couldNot signin ", error);
   }
 };
+
+export const getCurrentUser = async () => {
+  try {
+    const response = await api.get(`/api/user/current`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "Could not fetch user data";
+  }
+};
+

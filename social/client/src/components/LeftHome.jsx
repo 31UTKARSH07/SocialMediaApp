@@ -1,9 +1,10 @@
 // src/components/LeftHomeDesign.jsx
 import React from "react";
 import logo from "../assets/socialLogo.png";
-
+import { useSelector } from "react-redux";
 
 function LeftHome() {
+  const { userData } = useSelector((state) => state.user);
   return (
     <div
       className="
@@ -27,11 +28,13 @@ function LeftHome() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
         <div className="flex items-center gap-3">
           <div className="w-[60px] h-[60px] rounded-full overflow-hidden border border-neutral-300">
-            <img  alt="profile" className="w-full h-full object-cover" />
+            <img alt="profile" className="w-full h-full object-cover" />
           </div>
           <div>
-            <div className="font-semibold text-sm text-neutral-900">username</div>
-            <div className="text-xs text-neutral-500">Full Name</div>
+            <div className="font-semibold text-sm text-neutral-900">
+              {userData.userName}
+            </div>
+            <div className="text-xs text-neutral-500">{userData.name}</div>
           </div>
         </div>
         <div className="text-[#0095F6] text-sm font-semibold cursor-pointer hover:underline">
@@ -47,10 +50,7 @@ function LeftHome() {
         {Array(3)
           .fill("")
           .map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between w-full"
-            >
+            <div key={i} className="flex items-center justify-between w-full">
               <div className="flex items-center gap-3">
                 <div className="w-[50px] h-[50px] rounded-full bg-neutral-200"></div>
                 <div>
